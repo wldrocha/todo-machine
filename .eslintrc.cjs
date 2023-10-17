@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: ['standard-with-typescript', 'plugin:react/recommended', 'plugin:import/typescript'],
+  extends: ['standard-with-typescript', 'plugin:react/recommended', 'plugin:import/typescript', 'plugin:react/jsx-runtime'],
   overrides: [
     {
       env: {
