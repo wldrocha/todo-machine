@@ -14,13 +14,19 @@ function App (): JSX.Element {
   const completedTodos = todos.filter((todo) => !!todo.completed).length
   const totalTodos = todos.length
 
+  const searchedTodos = todos.filter((todo) => {
+    const todoText = todo.title.toLowerCase()
+    const todoSearch = searchValue.toLowerCase()
+    return todoText.includes(todoSearch)
+  })
+
   return (
     <>
       <TodoCounter completedTodo={completedTodos} totalTodos={totalTodos} />
 
       <TodoSearch updateSearchValue={setSearchValue} searchValue={searchValue} />
       <TodoList>
-      {todos.map((todo) => (
+      {searchedTodos.map((todo) => (
         <TodoItem key={todo?.id} {...todo}/>
       ))}
       </TodoList>
