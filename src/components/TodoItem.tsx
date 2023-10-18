@@ -11,7 +11,7 @@ export const TodoItem = ({ id, title, completed, toggleCompleteTodo, deleteTodo 
   return (
     <li className='TodoItem'>
       <IconCheck
-        className={`Icon ${completed && 'Icon-check--active'}`}
+        className={`Icon Icon-check ${completed && 'Icon-check--active'}`}
         onClick={() => {
           toggleCompleteTodo(id)
         }}

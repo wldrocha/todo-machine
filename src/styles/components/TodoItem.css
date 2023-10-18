@@ -33,14 +33,21 @@
   .Icon-check--active {
     color: #4caf50;
   }
+
+  .Icon-check {
+    transition: fill 0.2s;
+  }
+  .Icon-check:hover {
+    fill: #4caf50;
+  }
   
   .Icon-delete {
     width:32px;
     position: absolute;
     top: -24px;
     right: 0;
-    transition: color 0.2s;
+    transition: fill 0.2s;
   }
   .Icon-delete:hover {
-    color: red;
+    fill: red;
   }
