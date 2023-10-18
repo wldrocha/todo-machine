@@ -2,10 +2,14 @@ import { IconCheck, IconClose } from '.'
 import '../styles/components/TodoItem.css'
 import { type Todo } from '../types.d'
 
-export const TodoItem = ({ title, completed }: Todo): JSX.Element => {
+interface TodoItemProps extends Todo {
+  toggleCompleteTodo: (id: string) => void
+}
+
+export const TodoItem = ({ id, title, completed, toggleCompleteTodo }: TodoItemProps): JSX.Element => {
   return (
     <li className="TodoItem">
-    <IconCheck className={`Icon ${completed && 'Icon-check--active'}`} />
+    <IconCheck className={`Icon ${completed && 'Icon-check--active'}`} onClick={() => { toggleCompleteTodo(id) }} />
     <p className={`TodoItem-p ${completed && 'TodoItem-p--complete'}`}>
       {title}
     </p>
