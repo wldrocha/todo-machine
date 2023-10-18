@@ -1,3 +1,4 @@
+import '../styles/components/TodoSearch.css'
 export function TodoSearch (): JSX.Element {
-  return (<input placeholder="Buscar una tarea" />)
+  return (<input className="TodoSearch" placeholder="Buscar una tarea" />)
 }
