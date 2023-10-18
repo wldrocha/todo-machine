@@ -31,15 +31,20 @@ function App (): JSX.Element {
     setTodos(newTodos)
   }
 
+  const deleteTodo = (idToDelete: string): void => {
+    const newTodos = todos.filter((todo: Todo): boolean => todo.id !== idToDelete)
+    setTodos(newTodos)
+  }
+
   return (
     <>
       <TodoCounter completedTodo={completedTodos} totalTodos={totalTodos} />
 
       <TodoSearch updateSearchValue={setSearchValue} searchValue={searchValue} />
       <TodoList>
-      {searchedTodos.map((todo) => (
-        <TodoItem key={todo?.id} toggleCompleteTodo={toggleCompleteTodo} {...todo}/>
-      ))}
+        {searchedTodos.map((todo) => (
+          <TodoItem key={todo?.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
+        ))}
       </TodoList>
       <CreateTodoButton />
     </>
