@@ -1,6 +1,7 @@
-import './App.css'
+import { useState } from 'react'
 import { type ListOfTodos } from './types.d'
 import { CreateTodoButton, TodoCounter, TodoItem, TodoList, TodoSearch } from './components'
+import './App.css'
 
 const todos: ListOfTodos = [
   { id: crypto.randomUUID(), title: 'Cortar cebolla', completed: true },
@@ -8,15 +9,19 @@ const todos: ListOfTodos = [
 ]
 
 function App (): JSX.Element {
+  const [searchValue, setSearchValue] = useState('')
+
+  const completedTodos = todos.filter((todo) => !!todo.completed).length
+  const totalTodos = todos.length
+
   return (
     <>
-      <TodoCounter completedTodo={12} totalTodos={17} />
+      <TodoCounter completedTodo={completedTodos} totalTodos={totalTodos} />
 
-      <TodoSearch />
+      <TodoSearch updateSearchValue={setSearchValue} searchValue={searchValue} />
       <TodoList>
       {todos.map((todo) => (
-
-        <TodoItem {...todo}/>
+        <TodoItem key={todo?.id} {...todo}/>
       ))}
       </TodoList>
       <CreateTodoButton />
