@@ -12,7 +12,7 @@ import { useLocalStorage } from './hooks/useLocalStorage'
 function App (): JSX.Element {
   const [searchValue, setSearchValue] = useState('')
   // const [todos, setTodos] = useState<ListOfTodos>(todoList)
-  const [todos, saveTodos] = useLocalStorage<ListOfTodos>('TODOS_V1', [])
+  const { item: todos, saveItem: saveTodos, loading, error } = useLocalStorage<ListOfTodos>('TODOS_V1', [])
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length
   const totalTodos = todos.length
@@ -44,6 +44,14 @@ function App (): JSX.Element {
 
       <TodoSearch updateSearchValue={setSearchValue} searchValue={searchValue} />
       <TodoList>
+      {loading && (
+          <>
+            Cargando...
+          </>
+      )}
+        {error.error && error.message}
+        {(!loading && searchedTodos.length === 0) && 'No hay todos :('}
+
         {searchedTodos.map((todo) => (
           <TodoItem key={todo?.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
         ))}
