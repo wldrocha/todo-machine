@@ -2,15 +2,17 @@ import { useState } from 'react'
 import { type TodoId, type ListOfTodos, type Todo } from './types.d'
 import { CreateTodoButton, TodoCounter, TodoItem, TodoList, TodoSearch } from './components'
 import './App.css'
+import { useLocalStorage } from './hooks/useLocalStorage'
 
-const todoList: ListOfTodos = [
-  { id: crypto.randomUUID(), title: 'Cortar cebolla', completed: true },
-  { id: crypto.randomUUID(), title: 'Tomar el curso de intro a React', completed: false }
-]
+// const todoList: ListOfTodos = [
+//   { id: crypto.randomUUID(), title: 'Cortar cebolla', completed: true },
+//   { id: crypto.randomUUID(), title: 'Tomar el curso de intro a React', completed: false }
+// ]
 
 function App (): JSX.Element {
   const [searchValue, setSearchValue] = useState('')
-  const [todos, setTodos] = useState<ListOfTodos>(todoList)
+  // const [todos, setTodos] = useState<ListOfTodos>(todoList)
+  const [todos, saveTodos] = useLocalStorage<ListOfTodos>('TODOS_V1', [])
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length
   const totalTodos = todos.length
@@ -28,12 +30,12 @@ function App (): JSX.Element {
       }
       return todo
     })
-    setTodos(newTodos)
+    saveTodos(newTodos)
   }
 
   const deleteTodo = (idToDelete: string): void => {
     const newTodos = todos.filter((todo: Todo): boolean => todo.id !== idToDelete)
-    setTodos(newTodos)
+    saveTodos(newTodos)
   }
 
   return (
