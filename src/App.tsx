@@ -23,7 +23,7 @@ function App (): JSX.Element {
         {(!loading && searchedTodos.length === 0) && 'No hay todos :('}
 
         {searchedTodos.map((todo: Todo) => (
-          <TodoItem key={todo?.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
+          <TodoItem key={todo.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
         ))}
       </TodoList>
       <CreateTodoButton />
