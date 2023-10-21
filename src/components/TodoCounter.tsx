@@ -1,10 +1,10 @@
+import { useContext } from 'react'
+import { TodoContext, type TodoContextType } from '../context'
+// import { TodoContext } from '../context/TodoContext'
 import '../styles/components/TodoCounter.css'
-interface TodoCounterProps {
-  completedTodo: number
-  totalTodos: number
-}
-export function TodoCounter ({ completedTodo, totalTodos }: TodoCounterProps): JSX.Element {
-  return (
-      <h2 className="TodoCounter">{`Has completado ${completedTodo} de ${totalTodos} TODOS`}</h2>
-  )
+
+export function TodoCounter (): JSX.Element {
+  const { completedTodos, totalTodos } = useContext<TodoContextType>(TodoContext)
+
+  return <h2 className='TodoCounter'>{`Has completado ${completedTodos} de ${totalTodos} TODOS`}</h2>
 }

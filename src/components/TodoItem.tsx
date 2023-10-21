@@ -1,13 +1,16 @@
+import { useContext } from 'react'
 import { IconCheck, IconClose } from '.'
 import '../styles/components/TodoItem.css'
 import { type Todo } from '../types.d'
+import { TodoContext } from '../context'
 
 interface TodoItemProps extends Todo {
   toggleCompleteTodo: (id: string) => void
   deleteTodo: (id: string) => void
 }
 
-export const TodoItem = ({ id, title, completed, toggleCompleteTodo, deleteTodo }: TodoItemProps): JSX.Element => {
+export const TodoItem = ({ id, title, completed }: TodoItemProps): JSX.Element => {
+  const { toggleCompleteTodo, deleteTodo } = useContext(TodoContext)
   return (
     <li className='TodoItem'>
       <IconCheck

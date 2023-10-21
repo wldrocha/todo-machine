@@ -1,49 +1,19 @@
-import { useState } from 'react'
-import { type TodoId, type ListOfTodos, type Todo } from './types.d'
+import { useContext } from 'react'
 import { CreateTodoButton, TodoCounter, TodoItem, TodoList, TodoSearch } from './components'
-import './App.css'
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { TodoContext } from './context'
+import { type Todo } from './types'
 
-// const todoList: ListOfTodos = [
-//   { id: crypto.randomUUID(), title: 'Cortar cebolla', completed: true },
-//   { id: crypto.randomUUID(), title: 'Tomar el curso de intro a React', completed: false }
-// ]
+import './App.css'
 
 function App (): JSX.Element {
-  const [searchValue, setSearchValue] = useState('')
-  // const [todos, setTodos] = useState<ListOfTodos>(todoList)
-  const { item: todos, saveItem: saveTodos, loading, error } = useLocalStorage<ListOfTodos>('TODOS_V1', [])
-
-  const completedTodos = todos.filter((todo) => !!todo.completed).length
-  const totalTodos = todos.length
-
-  const searchedTodos = todos.filter((todo) => {
-    const todoText = todo.title.toLowerCase()
-    const todoSearch = searchValue.toLowerCase()
-    return todoText.includes(todoSearch)
-  })
-
-  const toggleCompleteTodo = (idToSearch: string): void => {
-    const newTodos = todos.map((todo: Todo): Todo => {
-      if (todo.id === idToSearch) {
-        todo.completed = !todo.completed
-      }
-      return todo
-    })
-    saveTodos(newTodos)
-  }
-
-  const deleteTodo = (idToDelete: string): void => {
-    const newTodos = todos.filter((todo: Todo): boolean => todo.id !== idToDelete)
-    saveTodos(newTodos)
-  }
+  const { loading, error, searchedTodos, toggleCompleteTodo, deleteTodo } = useContext(TodoContext)
 
   return (
     <>
-      <TodoCounter completedTodo={completedTodos} totalTodos={totalTodos} />
+      <TodoCounter />
 
-      <TodoSearch updateSearchValue={setSearchValue} searchValue={searchValue} />
-      <TodoList>
+      <TodoSearch />
+     <TodoList>
       {loading && (
           <>
             Cargando...
@@ -52,12 +22,12 @@ function App (): JSX.Element {
         {error.error && error.message}
         {(!loading && searchedTodos.length === 0) && 'No hay todos :('}
 
-        {searchedTodos.map((todo) => (
+        {searchedTodos.map((todo: Todo) => (
           <TodoItem key={todo?.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
         ))}
       </TodoList>
       <CreateTodoButton />
-    </>
+    </ >
   )
 }
 
