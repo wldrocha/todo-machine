@@ -1,5 +1,5 @@
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import { type Todo, type ListOfTodos } from '@/types'
+import { type Todo, type ListOfTodos, type TodoTitle } from '@/types'
 import { type ReactNode, createContext, useState } from 'react'
 
 export interface TodoContextType {
@@ -8,11 +8,14 @@ export interface TodoContextType {
   error: { error: boolean, message: string }
   completedTodos: number
   totalTodos: number
+  addTodo: (title: TodoTitle) => void
   searchedTodos: ListOfTodos
   deleteTodo: (idToDelete: string) => void
   toggleCompleteTodo: (idToSearch: string) => void
   searchValue: string
   setSearchValue: (newSearchValue: string) => void
+  isOpenModal: boolean
+  setIsOpenModal: (newIsOpenModal: boolean) => void
 }
 interface TodoContextProps {
   children: ReactNode
@@ -24,11 +27,14 @@ export const TodoContext = createContext({
   error: { error: false, message: '' },
   completedTodos: 0,
   totalTodos: 0,
+  addTodo: (_title: TodoTitle) => {},
   deleteTodo: (_idToDelete: string) => {},
   toggleCompleteTodo: (_idToSearch: string) => {},
   searchValue: '',
   setSearchValue: (_newSearchValue: string) => {},
-  searchedTodos: [] as ListOfTodos
+  searchedTodos: [] as ListOfTodos,
+  isOpenModal: false,
+  setIsOpenModal: (_newIsOpenModal: boolean) => {}
 })
 
 // const todoList: ListOfTodos = [
@@ -38,6 +44,7 @@ export const TodoContext = createContext({
 
 export function TodoProvider ({ children }: TodoContextProps): JSX.Element {
   const [searchValue, setSearchValue] = useState('')
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const { item: todos, saveItem: saveTodos, loading, error } = useLocalStorage<ListOfTodos>('TODOS_V1', [])
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length
@@ -48,6 +55,16 @@ export function TodoProvider ({ children }: TodoContextProps): JSX.Element {
     const todoSearch = searchValue.toLowerCase()
     return todoText.includes(todoSearch)
   })
+
+  const addTodo = ({ title }: TodoTitle): void => {
+    const newTodos = [...todos]
+    newTodos.push({
+      title,
+      completed: false,
+      id: crypto.randomUUID()
+    })
+    saveTodos(newTodos)
+  }
 
   const toggleCompleteTodo = (idToSearch: string): void => {
     const newTodos = todos.map((todo: Todo): Todo => {
@@ -63,6 +80,7 @@ export function TodoProvider ({ children }: TodoContextProps): JSX.Element {
     const newTodos = todos.filter((todo: Todo): boolean => todo.id !== idToDelete)
     saveTodos(newTodos)
   }
+
   return (
     <TodoContext.Provider
       value={{
@@ -71,11 +89,14 @@ export function TodoProvider ({ children }: TodoContextProps): JSX.Element {
         error,
         completedTodos,
         totalTodos,
+        addTodo,
         searchedTodos,
         deleteTodo,
         toggleCompleteTodo,
         searchValue,
-        setSearchValue
+        setSearchValue,
+        isOpenModal,
+        setIsOpenModal
       }}
     >
       {children}
