@@ -28,7 +28,7 @@ I'm leaving it configured with the swc plugin to make it faster.
 [x] Delete Todo
 [x] Edit Todo
 [x] Data persistence
-[ ] Add Todo
+[x] Add Todo
 [ ] Change pure CSS to Tailwind
 [ ] Add tests
 
