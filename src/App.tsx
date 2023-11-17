@@ -1,19 +1,40 @@
-import { useContext } from 'react'
-import { CreateTodoButton, TodoCounter, TodoItem, TodoList, TodoSearch, Modal, TodoForm } from './components'
-import { TodoContext } from './context'
+import {
+  CreateTodoButton,
+  TodoCounter,
+  TodoItem,
+  TodoList,
+  TodoSearch,
+  Modal,
+  TodoForm,
+  ChangeAlert
+} from './components'
 import { type Todo } from './types'
 
 import './App.css'
+import { useTodos } from './hooks/useTodos'
 
-
-function App(): JSX.Element {
-  const { loading, error, searchedTodos, toggleCompleteTodo, deleteTodo, isOpenModal } = useContext(TodoContext)
+function App (): JSX.Element {
+  const {
+    addTodo,
+    loading,
+    error,
+    searchValue,
+    searchedTodos,
+    completedTodos,
+    totalTodos,
+    toggleCompleteTodo,
+    deleteTodo,
+    setIsOpenModal,
+    setSearchValue: updateSearchValue,
+    isOpenModal,
+    sincroniceTodos
+  } = useTodos()
 
   return (
     <>
-      <TodoCounter />
+      <TodoCounter completedTodos={completedTodos} totalTodos={totalTodos} />
 
-      <TodoSearch />
+      <TodoSearch searchValue={searchValue} updateSearchValue={updateSearchValue} />
       <TodoList>
         {loading && <>Cargando...</>}
         {error.error && error.message}
@@ -23,12 +44,13 @@ function App(): JSX.Element {
           <TodoItem key={todo.id} toggleCompleteTodo={toggleCompleteTodo} deleteTodo={deleteTodo} {...todo} />
         ))}
       </TodoList>
-      <CreateTodoButton />
+      <CreateTodoButton setIsOpenModal={setIsOpenModal} />
       {isOpenModal && (
         <Modal>
-         <TodoForm />
+          <TodoForm addTodo={addTodo} setIsOpenModal={setIsOpenModal} />
         </Modal>
       )}
+      <ChangeAlert sincronice={sincroniceTodos} />
     </>
   )
 }

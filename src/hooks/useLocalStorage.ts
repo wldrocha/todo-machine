@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
 
-interface UseLocalStorageProp<T> {
+export interface UseLocalStorageProp<T> {
+  sincroniceItem: () => void
   item: T
   saveItem: (newItem: T) => void
   loading: boolean
   error: { error: boolean, message: string }
 }
 
-export function useLocalStorage<T> (
-  itemName: string,
-  initialValue: T
-): UseLocalStorageProp<T> {
+export function useLocalStorage<T> (itemName: string, initialValue: T): UseLocalStorageProp<T> {
+  const [sincronicedItem, setSincronicedItem] = useState(true)
   const [item, setItem] = useState<T>(initialValue)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({ error: false, message: '' })
+
+  window.addEventListener('storage', (change) => {
+    if (change.key === itemName) {
+      setSincronicedItem(true)
+    }
+  })
 
   const getInfoOnLocalStorage = (): void => {
     setTimeout(() => {
@@ -31,20 +36,31 @@ export function useLocalStorage<T> (
       } catch (error) {
         setError({ error: true, message: 'Ocurrió un error' })
       }
+      setSincronicedItem(true)
       setLoading(false)
     }, 3000)
   }
 
   useEffect(() => {
     getInfoOnLocalStorage()
-  }, [])
+  }, [sincronicedItem])
 
   const saveItem = (newItem: T): void => {
     localStorage.setItem(itemName, JSON.stringify(newItem))
     setItem(newItem)
+    setSincronicedItem(false)
   }
 
+  const sincroniceItem = () => {
+    setLoading(true);
+    setSincronicedItem(false);
+  };
+
   return {
-    item, saveItem, loading, error
+    sincroniceItem,
+    item,
+    saveItem,
+    loading,
+    error
   }
 }

@@ -1,15 +1,14 @@
 import '../styles/components/CreateTodoButton.css'
 import { IconPlus } from '.'
-import { useContext } from 'react'
-import { TodoContext } from '../context'
+import { useTodos } from '@/hooks'
 
-export function CreateTodoButton (): JSX.Element {
-  const { setIsOpenModal } = useContext(TodoContext)
-
+export function CreateTodoButton({ setIsOpenModal }): JSX.Element {
   const handleOpenModal = (): void => {
     setIsOpenModal(true)
   }
   return (
-    <button className="CreateTodoButton" onClick={handleOpenModal}><IconPlus /></button>
+    <button className='CreateTodoButton' onClick={handleOpenModal}>
+      <IconPlus />
+    </button>
   )
 }

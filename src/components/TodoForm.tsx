@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react'
-import { TodoContext } from '../context'
+import { useState } from 'react'
 import '../styles/components/TodoForm.css'
 
-export function TodoForm (): JSX.Element {
-  const { addTodo, setIsOpenModal } = useContext(TodoContext)
+export function TodoForm ({ addTodo, setIsOpenModal }): JSX.Element {
+  // const { addTodo, setIsOpenModal } = useTodos()
 
   const [newTodoValue, setNewTodoValue] = useState('')
 
