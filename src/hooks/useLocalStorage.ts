@@ -5,10 +5,10 @@ export interface UseLocalStorageProp<T> {
   item: T
   saveItem: (newItem: T) => void
   loading: boolean
-  error: { error: boolean, message: string }
+  error: { error: boolean; message: string }
 }
 
-export function useLocalStorage<T> (itemName: string, initialValue: T): UseLocalStorageProp<T> {
+export function useLocalStorage<T>(itemName: string, initialValue: T): UseLocalStorageProp<T> {
   const [sincronicedItem, setSincronicedItem] = useState(true)
   const [item, setItem] = useState<T>(initialValue)
   const [loading, setLoading] = useState(true)
@@ -52,9 +52,9 @@ export function useLocalStorage<T> (itemName: string, initialValue: T): UseLocal
   }
 
   const sincroniceItem = () => {
-    setLoading(true);
-    setSincronicedItem(false);
-  };
+    setLoading(true)
+    setSincronicedItem(false)
+  }
 
   return {
     sincroniceItem,
