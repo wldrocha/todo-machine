@@ -1,8 +1,11 @@
 import '../styles/components/CreateTodoButton.css'
 import { IconPlus } from '.'
-import { useTodos } from '@/hooks'
+import { type UseTodoType } from '@/hooks'
 
-export function CreateTodoButton({ setIsOpenModal }): JSX.Element {
+export interface CreateTodoButtonProps {
+  setIsOpenModal: UseTodoType['setIsOpenModal']
+}
+export function CreateTodoButton({ setIsOpenModal }: CreateTodoButtonProps): JSX.Element {
   const handleOpenModal = (): void => {
     setIsOpenModal(true)
   }

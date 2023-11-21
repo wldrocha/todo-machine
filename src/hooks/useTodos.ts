@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
-import { type TodoTitle, type ListOfTodos, type Todo } from '@/types'
-import { useLocalStorage } from '.'
+import { useMemo, useState } from 'react'
+import { type TodoTitle, type ListOfTodos, type Todo, type TodoId } from '@/types'
+import { type UseLocalStorageProp, useLocalStorage } from '.'
 
 export interface UseTodoType {
   todos: ListOfTodos
   loading: boolean
-  error: { error: boolean; message: string }
+  error: { error: boolean, message: string }
   completedTodos: number
   totalTodos: number
   addTodo: (title: TodoTitle) => void
@@ -13,10 +13,10 @@ export interface UseTodoType {
   deleteTodo: (idToDelete: string) => void
   toggleCompleteTodo: (idToSearch: string) => void
   searchValue: string
-  setSearchValue: (newSearchValue: string) => void
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>
   isOpenModal: boolean
-  setIsOpenModal: (newIsOpenModal: boolean) => void
-  sincroniceTodos: boolean
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  sincroniceTodos: UseLocalStorageProp<ListOfTodos>['sincroniceItem']
 }
 
 export const useTodos = (): UseTodoType => {
@@ -43,7 +43,7 @@ export const useTodos = (): UseTodoType => {
     [todos]
   )
 
-  const addTodo = ({ title }: TodoTitle): void => {
+  const addTodo = (title: TodoTitle): void => {
     const newTodos = [...todos]
     newTodos.push({
       title,
@@ -53,7 +53,7 @@ export const useTodos = (): UseTodoType => {
     saveTodos(newTodos)
   }
 
-  const toggleCompleteTodo = (idToSearch: string): void => {
+  const toggleCompleteTodo = (idToSearch: TodoId): void => {
     const newTodos = todos.map((todo: Todo): Todo => {
       if (todo.id === idToSearch) {
         todo.completed = !todo.completed
@@ -63,7 +63,7 @@ export const useTodos = (): UseTodoType => {
     saveTodos(newTodos)
   }
 
-  const deleteTodo = (idToDelete: string): void => {
+  const deleteTodo = (idToDelete: TodoId): void => {
     const newTodos = todos.filter((todo: Todo): boolean => todo.id !== idToDelete)
     saveTodos(newTodos)
   }

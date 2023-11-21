@@ -1,11 +1,11 @@
+import { type UseTodoType } from '@/hooks'
 import { IconCheck, IconClose } from '.'
 import '../styles/components/TodoItem.css'
 import { type Todo } from '../types.d'
-import { useTodos } from '@/hooks'
 
 interface TodoItemProps extends Todo {
-  toggleCompleteTodo: (id: string) => void
-  deleteTodo: (id: string) => void
+  toggleCompleteTodo: UseTodoType['toggleCompleteTodo']
+  deleteTodo: UseTodoType['deleteTodo']
 }
 
 export const TodoItem = ({ id, title, completed, toggleCompleteTodo, deleteTodo }: TodoItemProps): JSX.Element => {
