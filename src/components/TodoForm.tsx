@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import '../styles/components/TodoForm.css'
+import { type UseTodoType } from '@/hooks'
 
-export function TodoForm ({ addTodo, setIsOpenModal }): JSX.Element {
-  // const { addTodo, setIsOpenModal } = useTodos()
+export interface TodoFormProps {
+  addTodo: UseTodoType['addTodo']
+  setIsOpenModal: UseTodoType['setIsOpenModal']
+}
 
+export function TodoForm({ addTodo, setIsOpenModal }: TodoFormProps): JSX.Element {
   const [newTodoValue, setNewTodoValue] = useState('')
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    addTodo({ title: newTodoValue })
+    addTodo(newTodoValue)
     setIsOpenModal(false)
   }
 

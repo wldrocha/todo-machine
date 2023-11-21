@@ -1,8 +1,12 @@
-import { useContext } from 'react'
-
+import { type UseTodoType } from '@/hooks'
 import '../styles/components/TodoSearch.css'
 
-export function TodoSearch ({searchValue, updateSearchValue}): JSX.Element {
+interface TodoSearchProps {
+  searchValue: UseTodoType['searchValue']
+  updateSearchValue: UseTodoType['setSearchValue']
+}
+
+export function TodoSearch({ searchValue, updateSearchValue }: TodoSearchProps): JSX.Element {
   const onChangeInputSearch = (newSearchValue: string): void => {
     updateSearchValue(newSearchValue)
   }

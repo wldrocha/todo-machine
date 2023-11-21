@@ -1,7 +1,11 @@
-import { useStorageListener } from '@/hooks'
+import { type UseTodoType, useStorageListener } from '@/hooks'
 import '../styles/components/ChangeAlert.css'
 
-function ChangeAlert ({ sincronice }: { sincronice: boolean }): JSX.Element {
+interface ChangeAlertProps {
+  sincronice: UseTodoType['sincroniceTodos']
+}
+
+function ChangeAlert({ sincronice }: ChangeAlertProps): JSX.Element {
   const { show: isShow, toggleShow } = useStorageListener(sincronice)
 
   return (
